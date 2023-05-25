@@ -1,0 +1,34 @@
+- name: Configuration de apache
+  hosts: localhost
+
+  vars:
+    domaines:
+      - axel.com
+      - ww.google.com
+      - www.git.fr
+
+  tasks:
+    - name: Installation de apache2
+      apt:
+        name: apache2
+        state: present
+    - name: Codage des sites availaibles et enaibles
+      copy:
+        content: |
+          "<VirtualHost *:80>
+
+            ServerName {{ item }}
+            DocumentRoot /var/www/{{ item }}
+
+            <Directory /var/www/{{ item }}>
+              AllowOverride All
+              Require all granted
+            </Directory>
+          </VirtualHost>"
+        dest: "/etc/apache2/sites-available/{{ item }}.conf"
+      with_items: "{{ domaines }}"
+      become: yes
+    - name: Restart apache
+      service:
+        name: apache2
+        state: restarted
