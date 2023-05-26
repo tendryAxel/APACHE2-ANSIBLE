@@ -1,12 +1,6 @@
 - name: Configuration de apache
   hosts: localhost
 
-  vars:
-    domaines:
-      - axel.com
-      - ww.google.com
-      - www.git.fr
-
   tasks:
     - name: Installation de apache2
       apt:
