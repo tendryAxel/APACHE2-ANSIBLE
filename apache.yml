@@ -33,7 +33,9 @@
       become: yes
 
     - name: Creation des liens symboliques site enable
-      command: "sudo ln -s /etc/apache2/sites-available/{{ item }} /etc/apache2/sites-enabled/"
+      command: |
+       "sudo rm /etc/apache2/sites-enabled/{{ item }}
+       sudo ln -s /etc/apache2/sites-available/{{ item }} /etc/apache2/sites-enabled/"
       with_items: "{{ domainesliste }}"
       become: yes
 
