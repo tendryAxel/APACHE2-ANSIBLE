@@ -18,14 +18,12 @@ sudo apt install ansible
 
 ## Execution
 
-Utiliser la commande suivante sur la machine où installer **Apache2**
+- Lister les domaines dans domaines.txt en mettant à la ligne à chaque fois
+- Utiliser la commande suivante sur la machine où installer **Apache2**
 
 ```sh
 sudo ansible-playbook apache.yml
 ```
 
 ## Résultats
-Les hosts suivants sont disponibles:
-- axel.com
-- ww.google.com
-- www.git.fr
+Les hosts suivants sont ceux que vous avez mis dans domaines.txt
