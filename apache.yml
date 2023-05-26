@@ -8,13 +8,12 @@
         state: present
 
     - name: Lire la liste des domaines
-      slurp:
-        path: ./domaines.txt
+      command: cat ./domaines.txt
       register: domaines
 
     - name: Convertire domaines fichier en ligne par ligne
       set_fact:
-        domainesliste: "{{ domaines.content | b64decode | string | trim | regex_replace('\r', '') | split('\n') }}"
+        domainesliste: "{{ domaines.stdout_lines }}"
 
     - name: Codage des sites availaibles et enaibles
       copy:
