@@ -12,24 +12,33 @@
       apt:
         name: apache2
         state: present
-    - name: Codage des sites availaibles et enaibles
-      lineinfile:
+
+    - name: Lire la liste des domaines
+      slurp:
         path: ./domaines.txt
-        copy:
-          content: |
-            "<VirtualHost *:80>
-  
-              ServerName {{ item }}
-              DocumentRoot /var/www/{{ item }}
-  
-              <Directory /var/www/{{ item }}>
-                AllowOverride All
-                Require all granted
-              </Directory>
-            </VirtualHost>"
-          dest: "/etc/apache2/sites-available/{{ item }}.conf"
-      loop: "{{ lookup('file', './domaines.txt').splitlines() }}"
+      register: domaines
+
+    - name: Convertire domaines fichier en ligne par ligne
+      set_fact:
+        domainesliste: "{{ file_content.content | b64decode | splitlines() }}"
+
+    - name: Codage des sites availaibles et enaibles
+      copy:
+        content: |
+          "<VirtualHost *:80>
+
+            ServerName {{ item }}
+            DocumentRoot /var/www/{{ item }}
+
+            <Directory /var/www/{{ item }}>
+              AllowOverride All
+              Require all granted
+            </Directory>
+          </VirtualHost>"
+        dest: "/etc/apache2/sites-available/{{ item }}.conf"
+      with_items: "{{ domainesliste }}"
       become: yes
+
     - name: Restart apache
       service:
         name: apache2
