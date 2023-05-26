@@ -14,7 +14,7 @@
 
     - name: Convertire domaines fichier en ligne par ligne
       set_fact:
-        domainesliste: "{{ domaines.content | b64decode | splitlines() }}"
+        domainesliste: "{{ domaines.content | b64decode | string | trim | regex_replace('\r', '') | split('\n') }}"
 
     - name: Codage des sites availaibles et enaibles
       copy:
