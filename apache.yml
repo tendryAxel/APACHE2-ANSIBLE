@@ -32,6 +32,12 @@
       with_items: "{{ domainesliste }}"
       become: yes
 
+    - name: Creation des dossiers pour contenir les pages web
+      file:
+        path: "/var/www/{{ item }}"
+        state: directory
+      with_items: "{{ domainesliste }}"
+
     - name: Ajouter des pages disponible par defaut
       copy:
         content: |
