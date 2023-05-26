@@ -18,7 +18,7 @@
     - name: Codage des sites availaibles
       copy:
         content: |
-          "<VirtualHost *:80>
+          <VirtualHost *:80>
 
             ServerName {{ item }}
             DocumentRoot /var/www/{{ item }}
@@ -27,7 +27,7 @@
               AllowOverride All
               Require all granted
             </Directory>
-          </VirtualHost>"
+          </VirtualHost>
         dest: "/etc/apache2/sites-available/{{ item }}.conf"
       with_items: "{{ domainesliste }}"
       become: yes
