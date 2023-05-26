@@ -33,9 +33,12 @@
       become: yes
 
     - name: Supprimer les liens symboliques site enable
-      command: "sudo rm /etc/apache2/sites-enabled/{{ item }}"
+      file:
+        path: "/etc/apache2/sites-enabled/{{ item }}"
+        state: absent
+        force: yes
       with_items: "{{ domainesliste }}"
-      become: yes
+      ignore_errors: yes
 
     - name: Creation des liens symboliques site enable
       command: "sudo ln -s /etc/apache2/sites-available/{{ item }} /etc/apache2/sites-enabled/"
