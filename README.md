@@ -27,3 +27,11 @@ sudo ansible-playbook apache.yml
 
 ## Résultats
 Les hosts suivants sont ceux que vous avez mis dans domaines.txt
+
+---
+
+Les sites sont à déposer dans /var/www/ suivie du nom de domaine
+
+Exemple: si le nom de domaine est www.hei.com
+
+Alors les fichier .html et .css doivent être dans /var/www/www.hei.com
