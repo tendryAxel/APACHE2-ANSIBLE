@@ -15,7 +15,7 @@
       set_fact:
         domainesliste: "{{ domaines.stdout_lines }}"
 
-    - name: Codage des sites availaibles et enaibles
+    - name: Codage des sites availaibles
       copy:
         content: |
           "<VirtualHost *:80>
@@ -29,6 +29,14 @@
             </Directory>
           </VirtualHost>"
         dest: "/etc/apache2/sites-available/{{ item }}.conf"
+      with_items: "{{ domainesliste }}"
+      become: yes
+
+    - name: Creation des liens symboliques site enable
+      file:
+        src: "/etc/apache2/sites-available/{{ item }}.conf"
+        dest: "/etc/apache2/sites-enabled/{{ item }}.conf"
+        state: link
       with_items: "{{ domainesliste }}"
       become: yes
 
